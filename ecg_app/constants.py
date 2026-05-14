@@ -1,0 +1,36 @@
+﻿STANDARD_12_ORDER = [
+    "I",
+    "II",
+    "III",
+    "aVR",
+    "aVL",
+    "aVF",
+    "V1",
+    "V2",
+    "V3",
+    "V4",
+    "V5",
+    "V6",
+]
+
+MAIN_Y_LIM = 3.0
+ZOOM_Y_LIM = 3.0
+
+Y_MAJOR_STEP = 0.5
+Y_MINOR_STEP = 0.1
+
+ZOOM_DIALOG_WIDTH = 1900
+ZOOM_DIALOG_HEIGHT = 640
+
+SEC_PER_MM = 0.04
+MV_PER_MM = 0.1
+AMP_GAIN_CORRECTION = 1.37
+
+GRID_COLOR = "#D98391"
+GRID_MAJOR_LINESTYLE = "--"
+GRID_MINOR_LINESTYLE = ":"
+GRID_MAJOR_WIDTH = 0.8
+GRID_MINOR_WIDTH = 0.4
+GRID_MINOR_ALPHA = 0.6
+
+PAPER_FACE_COLOR = "#fff7f7"
