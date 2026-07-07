@@ -4,9 +4,12 @@ import base64
 import zlib
 import xml.etree.ElementTree as ET
 from datetime import datetime
+from pathlib import Path
 from typing import Any
 
 import numpy as np
+
+_DEFAULT_PATIENT_NAME: str = "John Doe"
 
 
 _MUSE_MEASUREMENT_TAGS: dict[str, str] = {
@@ -74,6 +77,7 @@ def export_muse_xml(
     fields: dict[str, Any],
     out_path: str,
     measurements: dict[str, Any] | None = None,
+    source_path: str | None = None,
 ) -> None:
     """Export ECG signal to GE MUSE XML format.
 
@@ -85,6 +89,11 @@ def export_muse_xml(
     how real MUSE files store data and how this app's own MUSE loader
     re-derives III/aVR/aVL/aVF on import.
 
+    When the source carries no patient ID, the original file's stem is
+    used instead so the exported record stays identifiable; no format
+    this app reads carries a patient name at all, so PatientLastName
+    always falls back to a fixed placeholder.
+
     Args:
         signal: Signal array of shape (samples, leads) in mV.
         fields: Metadata dict; must contain 'fs' and 'sig_name'.
@@ -93,6 +102,9 @@ def export_muse_xml(
         out_path: Output .xml file path.
         measurements: Optional dict with keys hr, pr, qrs, qt, qtc,
             p_axis, r_axis, t_axis (int or None, values in BPM/ms/deg).
+        source_path: Path to the originally loaded ECG file, used as the
+            PatientID fallback (its filename stem) when the source has
+            no patient ID.
 
     Returns:
         None
@@ -110,15 +122,20 @@ def export_muse_xml(
         if lead in sig_name and sig_name.index(lead) < signal.shape[1]
     ]
 
+    patient_id = fields.get("patient_id") or None
+    if not patient_id and source_path:
+        patient_id = Path(source_path).stem
+    patient_name = fields.get("patient_name") or _DEFAULT_PATIENT_NAME
+
     root = ET.Element("RestingECG")
 
     muse_info = ET.SubElement(root, "MuseInfo")
     ET.SubElement(muse_info, "MuseVersion").text = ""
 
     patient_elem = ET.SubElement(root, "PatientDemographics")
-    ET.SubElement(patient_elem, "PatientID").text = fields.get("patient_id") or ""
+    ET.SubElement(patient_elem, "PatientID").text = patient_id or ""
     ET.SubElement(patient_elem, "Race").text = ""
-    ET.SubElement(patient_elem, "PatientLastName").text = ""
+    ET.SubElement(patient_elem, "PatientLastName").text = patient_name
 
     test_elem = ET.SubElement(root, "TestDemographics")
     ET.SubElement(test_elem, "DataType").text = "RESTING"

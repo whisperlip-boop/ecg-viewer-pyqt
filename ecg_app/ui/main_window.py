@@ -427,7 +427,10 @@ class ECGViewer(QMainWindow):
             elif "MAT" in fmt:
                 export_mat_hea(self.current_signal, self.current_fields, out_path, measurements)
             elif "MUSE" in fmt:
-                export_muse_xml(self.current_signal, self.current_fields, out_path, measurements)
+                export_muse_xml(
+                    self.current_signal, self.current_fields, out_path, measurements,
+                    source_path=self.current_path,
+                )
             QMessageBox.information(self, "Convert", f"Saved to:\n{out_path}")
         except Exception as exc:
             self.show_error(f"Convert failed: {exc}")
