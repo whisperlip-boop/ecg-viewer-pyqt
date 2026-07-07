@@ -83,8 +83,9 @@ def export_muse_xml(
 
     Mirrors the element order and tag set of a real GE MUSE export
     (DOCTYPE, MuseInfo, PatientDemographics, TestDemographics,
-    RestingECGMeasurements pair, single Rhythm Waveform) so that
-    downstream MUSE-compatible readers can parse the file. Only the
+    RestingECGMeasurements pair, an empty Diagnosis placeholder, single
+    Rhythm Waveform) so that downstream MUSE-compatible readers can
+    parse the file. Only the
     8 independently-acquired leads (I, II, V1-V6) are written, matching
     how real MUSE files store data and how this app's own MUSE loader
     re-derives III/aVR/aVL/aVF on import.
@@ -164,6 +165,8 @@ def export_muse_xml(
     _add_measurements_block(
         root, "OriginalRestingECGMeasurements", measurements, fs, include_frederica=False
     )
+
+    ET.SubElement(root, "Diagnosis")
 
     waveform = ET.SubElement(root, "Waveform")
     ET.SubElement(waveform, "WaveformType").text = "Rhythm"
