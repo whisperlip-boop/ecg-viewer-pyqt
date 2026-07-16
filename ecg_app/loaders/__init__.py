@@ -28,6 +28,8 @@ def _read_hea_measurements(hea_path: str) -> dict | None:
 from .mwf import load_dat_mwf
 from .mat_hea import load_mat_hea
 from .csv_loader import load_csv_waveform
+from .json_loader import load_json_waveform
+from .ekg_microcor import load_ekg_waveform
 from .fukuda import load_fukuda_ecg
 from .xml_common import detect_xml_type
 from .xml_hativ import load_hativ_xml
@@ -43,7 +45,7 @@ def normalize_input_to_base_path(file_path):
     suffix = path.suffix.lower()
     if suffix in [".dat", ".hea", ".mwf", ".mat", ".csv"]:
         return str(path.with_suffix(""))
-    if suffix in [".xml", ".ecg"]:
+    if suffix in [".xml", ".ecg", ".json", ".ekg"]:
         return str(path)
     return str(path)
 
@@ -53,6 +55,12 @@ def load_waveform(base_path):
 
     if path.suffix.lower() == ".ecg" and path.exists():
         return load_fukuda_ecg(str(path))
+
+    if path.suffix.lower() == ".json" and path.exists():
+        return load_json_waveform(str(path))
+
+    if path.suffix.lower() == ".ekg" and path.exists():
+        return load_ekg_waveform(str(path))
 
     if path.suffix.lower() == ".xml" and path.exists():
         xml_type = detect_xml_type(str(path))
@@ -99,5 +107,7 @@ def load_waveform(base_path):
         "- .mat + .hea\n"
         "- .dat + .mwf\n"
         "- .mwf (standalone)\n"
-        "- .csv (standalone)"
+        "- .csv (standalone)\n"
+        "- .json (standalone)\n"
+        "- .ekg (standalone, microCOR)"
     )

@@ -7,6 +7,8 @@ from .loaders import (
 from .loaders.mwf import parse_mwf_fixed_family, load_dat_mwf
 from .loaders.mat_hea import load_mat_hea
 from .loaders.csv_loader import load_csv_waveform
+from .loaders.json_loader import load_json_waveform
+from .loaders.ekg_microcor import load_ekg_waveform
 from .loaders.fukuda import load_fukuda_ecg
 from .loaders.xml_common import detect_xml_type
 from .loaders.xml_hativ import load_hativ_xml
@@ -24,6 +26,8 @@ __all__ = [
     "load_dat_mwf",
     "load_mat_hea",
     "load_csv_waveform",
+    "load_json_waveform",
+    "load_ekg_waveform",
     "load_fukuda_ecg",
     "detect_xml_type",
     "load_hativ_xml",

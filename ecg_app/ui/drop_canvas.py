@@ -15,7 +15,7 @@ class DropCanvas(FigureCanvas):
         if event.mimeData().hasUrls():
             for url in event.mimeData().urls():
                 file_path = url.toLocalFile()
-                if Path(file_path).suffix.lower() in [".dat", ".hea", ".mwf", ".mat", ".csv", ".xml", ".ecg"]:
+                if Path(file_path).suffix.lower() in [".dat", ".hea", ".mwf", ".mat", ".csv", ".xml", ".ecg", ".json", ".ekg"]:
                     event.acceptProposedAction()
                     return
         event.ignore()
@@ -23,7 +23,7 @@ class DropCanvas(FigureCanvas):
     def dropEvent(self, event):
         for url in event.mimeData().urls():
             file_path = url.toLocalFile()
-            if Path(file_path).suffix.lower() in [".dat", ".hea", ".mwf", ".mat", ".csv", ".xml", ".ecg"]:
+            if Path(file_path).suffix.lower() in [".dat", ".hea", ".mwf", ".mat", ".csv", ".xml", ".ecg", ".json", ".ekg"]:
                 base_path = normalize_input_to_base_path(file_path)
                 self.drop_callback(base_path)
                 return

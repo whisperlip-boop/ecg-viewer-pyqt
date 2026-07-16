@@ -64,7 +64,7 @@ class ECGViewer(QMainWindow):
         self.setCentralWidget(self.main_widget)
         self.layout = QVBoxLayout(self.main_widget)
 
-        self.load_button = QPushButton("Open ECG File (.dat / .hea / .mat / .mwf / .csv / .xml / .ecg)", self)
+        self.load_button = QPushButton("Open ECG File (.dat / .hea / .mat / .mwf / .csv / .xml / .ecg / .json / .ekg)", self)
         self.load_button.clicked.connect(self.load_ecg)
         self.layout.addWidget(self.load_button)
 
@@ -282,7 +282,7 @@ class ECGViewer(QMainWindow):
             self,
             "Select ECG File",
             "",
-            "ECG Files (*.dat *.DAT *.hea *.HEA *.mat *.MAT *.mwf *.MWF *.csv *.CSV *.xml *.XML *.ecg *.ECG);;All Files (*)",
+            "ECG Files (*.dat *.DAT *.hea *.HEA *.mat *.MAT *.mwf *.MWF *.csv *.CSV *.xml *.XML *.ecg *.ECG *.json *.JSON *.ekg *.EKG);;All Files (*)",
             options=options,
         )
 
